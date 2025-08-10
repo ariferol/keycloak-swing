@@ -261,6 +261,65 @@ public class MainScreen extends javax.swing.JFrame {
         appendTextArea("\n" + line);
         appendTextArea("            TOKEN EXCHANGE SONUCU");
         appendTextArea(line);
+        
+        try {
+            // JSON formatında parse etmeye çalış
+            if (tokenResponse.trim().startsWith("{")) {
+                // Basit JSON parsing (external library kullanmadan)
+                String[] lines = tokenResponse.split(",");
+                for (String entry : lines) {
+                    entry = entry.trim().replace("{", "").replace("}", "").replace("\"", "");
+                    if (entry.contains(":")) {
+                        String[] parts = entry.split(":", 2);
+                        if (parts.length == 2) {
+                            String key = parts[0].trim();
+                            String value = parts[1].trim();
+                            
+                            if (key.equals("access_token")) {
+                                appendTextArea("✓ ACCESS TOKEN:");
+                                appendTextArea("  " + formatToken(value));
+                                appendTextArea("");
+                            } else if (key.equals("refresh_token")) {
+                                appendTextArea("✓ REFRESH TOKEN:");
+                                appendTextArea("  " + formatToken(value));
+                                appendTextArea("");
+                            } else if (key.equals("id_token")) {
+                                appendTextArea("✓ ID TOKEN:");
+                                appendTextArea("  " + formatToken(value));
+                                appendTextArea("");
+                            } else if (key.equals("token_type")) {
+                                appendTextArea("✓ TOKEN TYPE: " + value);
+                            } else if (key.equals("expires_in")) {
+                                appendTextArea("✓ EXPIRES IN: " + value + " saniye");
+                            } else if (key.equals("scope")) {
+                                appendTextArea("✓ SCOPE: " + value);
+                            } else {
+                                appendTextArea("✓ " + key.toUpperCase() + ": " + value);
+                            }
+                        }
+                    }
+                }
+            } else {
+                // JSON değilse direkt göster
+                appendTextArea("RAW RESPONSE:");
+                appendTextArea(tokenResponse);
+            }
+        } catch (Exception e) {
+            appendTextArea("Token parse hatası, raw response:");
+            appendTextArea(tokenResponse);
+        }
+        
+        String endLine = createLine("=", 50);
+        appendTextArea(endLine);
+        appendTextArea("Login işlemi başarıyla tamamlandı!");
+        appendTextArea(endLine);
+    }    
+
+    /* private void formatAndDisplayToken(String tokenResponse) {
+        String line = createLine("=", 50);
+        appendTextArea("\n" + line);
+        appendTextArea("            TOKEN EXCHANGE SONUCU");
+        appendTextArea(line);
         if (tokenResponse.trim().startsWith("{")) {
             Map<String,String> map = JsonTokenFormatter.parse(tokenResponse);
             for (Map.Entry<String,String> e : map.entrySet()) {
@@ -284,7 +343,7 @@ public class MainScreen extends javax.swing.JFrame {
         appendTextArea("Login işlemi başarıyla tamamlandı!");
         appendTextArea(endLine);
     }
-
+ */
     private String formatToken(String token) {
         if (token == null || token.length() < 20) return token;
         StringBuilder formatted = new StringBuilder(); int lineLength = 80;
