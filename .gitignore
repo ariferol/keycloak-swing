@@ -1,0 +1,42 @@
+# Maven build output
+/target/
+
+# IntelliJ IDEA
+*.iml
+.idea/
+/out/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+
+# OS / Misc
+.DS_Store
+Thumbs.db
+*.log
+
+# Java
+hs_err_pid*.log
+replay_pid*.log
+
+# Security (example secret files; ensure real secrets are handled securely)
+secret*.properties
+*.keystore
+*.jks
+
+# Ignore generated jars if copied to root
+/*.jar
+
+# Local config (keep example instead)
+src/main/resources/config.properties

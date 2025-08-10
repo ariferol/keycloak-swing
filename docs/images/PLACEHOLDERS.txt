@@ -1,0 +1,5 @@
+Add your media here:
+- screenshot.png
+- login-flow.gif
+
+These filenames are referenced in the root README. Replace after generating.
